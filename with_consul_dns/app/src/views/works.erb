@@ -1,0 +1,35 @@
+<style>
+  table {
+    border-collapse: collapse;
+  }
+  th, td {
+    border: 1px solid black;
+    padding: 10px;
+    text-align: left;
+  }
+  tr:nth-child(even) {
+    background-color: #eee;
+  }
+  tr:nth-child(odd) {
+    background-color: #fff;
+  }  
+</style>
+
+<h3>William Shakespeare's List of Works</h3>
+
+<table>
+<tr>
+<th>Year</th>
+<th>Title</th>
+<th>Total Words</th>
+<th>Total Paragraphs</th>
+</tr>
+<% @works.each do |w| %>
+<tr>
+<td><%= w.year %></td>
+<td><%= w.longtitle %></td>
+<td><%= w.totalwords %></td>
+<td><%= w.totalparagraphs %></td>
+</tr>
+<% end %>
+</table>

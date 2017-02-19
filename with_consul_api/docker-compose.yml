@@ -1,0 +1,44 @@
+version: "3"
+services:
+  db:
+    build:
+      dockerfile: Dockerfile
+      context: ./db
+    container_name: db
+    volumes: 
+      - ./db/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+      - ./containerpilot:/usr/local/bin/containerpilot
+    environment:
+      - POSTGRES_PASSWORD=mysecretpassword
+    depends_on: 
+      - consul
+
+  app:
+    build:
+      dockerfile: Dockerfile
+      context: ./app
+    container_name: app
+    volumes:
+      - ./app/src:/app
+      - ./containerpilot:/usr/local/bin/containerpilot
+    depends_on:
+      - consul
+      - db
+    ports:
+      - 3000:3000
+
+  test_runner:
+    build:
+      dockerfile: Dockerfile
+      context: ./test_runner
+    container_name: test_runner
+    volumes:
+      - ./containerpilot:/usr/local/bin/containerpilot
+    depends_on:
+      - consul
+      - app
+
+  consul:
+    image: consul        
+    ports:
+      - 8500:8500
