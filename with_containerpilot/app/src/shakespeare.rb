@@ -1,13 +1,14 @@
 require 'sinatra'
 require 'data_mapper'
 require 'json'
+db_password = ENV['POSTGRES_PASSWORD']
 
-DataMapper.setup(:default, 'postgres://postgres:mysecretpassword@db/postgres')
+DataMapper.setup(:default, "postgres://postgres:#{db_password}@db/postgres")
 
 class Work
   include DataMapper::Resource
   storage_names[:default] = 'work'
-  property :workid, String, :key => true 
+  property :workid, String, :key => true
   property :title, String
   property :longtitle, String
   property :year, Integer
@@ -16,7 +17,6 @@ class Work
   property :source, String
   property :totalwords, Integer
   property :totalparagraphs, Integer
- 
 end
 
 DataMapper.finalize

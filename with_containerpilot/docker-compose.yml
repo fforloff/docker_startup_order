@@ -5,12 +5,11 @@ services:
       dockerfile: Dockerfile
       context: ./db
     container_name: db
-    volumes: 
-      - ./db/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+    volumes:
       - ./containerpilot:/usr/local/bin/containerpilot
     environment:
-      - POSTGRES_PASSWORD=mysecretpassword
-    depends_on: 
+      - POSTGRES_PASSWORD
+    depends_on:
       - consul
 
   app:
@@ -18,6 +17,8 @@ services:
       dockerfile: Dockerfile
       context: ./app
     container_name: app
+    environment:
+      - POSTGRES_PASSWORD
     volumes:
       - ./app/src:/app
       - ./containerpilot:/usr/local/bin/containerpilot
@@ -39,6 +40,6 @@ services:
       - app
 
   consul:
-    image: consul        
+    image: consul
     ports:
       - 8500:8500

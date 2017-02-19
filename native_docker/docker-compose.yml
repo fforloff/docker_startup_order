@@ -5,10 +5,8 @@ services:
       dockerfile: Dockerfile
       context: ./db
     container_name: db1
-    volumes: 
-      - ./db/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
     environment:
-      - POSTGRES_PASSWORD=mysecretpassword
+      - POSTGRES_PASSWORD
     healthcheck:
       test: /usr/local/bin/healthcheck.sh
 
@@ -17,6 +15,8 @@ services:
       dockerfile: Dockerfile
       context: ./app
     container_name: app1
+    environment:
+      - POSTGRES_PASSWORD
     volumes:
       - ./app/src:/app
     depends_on:
@@ -35,4 +35,3 @@ services:
     depends_on:
       app:
         condition: service_healthy
-
